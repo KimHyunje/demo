@@ -21,12 +21,6 @@ import com.demo.booksearch.search.keyword.infrastructure.SearchKeywordRepository
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@Transactional
-//@DataJpaTest(
-//		showSql = true, 
-//		includeFilters = @Filter(
-//				type = FilterType.ASSIGNABLE_TYPE, 
-//				classes = QuerydslRepositorySupport.class))
 public class SearchKeywordRepositoryImplTest {
 
 	private static final String KEYWORD1 = "키워드1";

@@ -19,19 +19,27 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.demo.booksearch.search.book.application.BookApplicationService;
 import com.demo.booksearch.search.book.domain.Book;
-import com.demo.booksearch.search.book.interfaces.BookRestControllerV1;
+import com.demo.booksearch.security.BookSearchUserDetailsService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(BookRestControllerV1.class)
+@WebMvcTest(
+		controllers = BookRestControllerV1.class, 
+		includeFilters = @Filter(
+				type = FilterType.ASSIGNABLE_TYPE, 
+				classes = BookSearchUserDetailsService.class))
 public class BookRestControllerV1Test {
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
@@ -43,7 +51,10 @@ public class BookRestControllerV1Test {
 	private MockMvc mockMvc;
 
 	@MockBean
-	private BookApplicationService applicationService;
+	private BookSearchUserDetailsService bookSearchUserDetailsService;
+	
+	@MockBean
+	private BookApplicationService bookApplicationService;
 
 	private Page<Book> books;
 
@@ -51,7 +62,9 @@ public class BookRestControllerV1Test {
 	public void setUp() {
 		books = new PageImpl<>(List.of(book(), book()), PageRequest.of(1, 2), 5);
 
-		given(applicationService.search(any(), any(), any())).willReturn(books);
+		given(bookSearchUserDetailsService.loadUserByUsername(any()))
+				.willReturn(new User("userId", "1234qwer", List.of(new SimpleGrantedAuthority("USER"))));
+		given(bookApplicationService.search(any(), any(), any())).willReturn(books);
 	}
 
 	@Test
@@ -76,8 +89,6 @@ public class BookRestControllerV1Test {
 						is(books.getContent().get(0).getContents())))
 				.andExpect(jsonPath("$.books[0].isbn", 
 						is(books.getContent().get(0).getIsbn())))
-				.andExpect(jsonPath("$.books[0].authors.*", 
-						hasSize(books.getContent().get(0).getAuthors().size())))
 				.andExpect(jsonPath("$.books[0].publisher", 
 						is(books.getContent().get(0).getPublisher())))
 				.andExpect(jsonPath("$.books[0].datetime", 
@@ -95,8 +106,6 @@ public class BookRestControllerV1Test {
 						is(books.getContent().get(1).getContents())))
 				.andExpect(jsonPath("$.books[1].isbn", 
 						is(books.getContent().get(1).getIsbn())))
-				.andExpect(jsonPath("$.books[1].authors.*", 
-						hasSize(books.getContent().get(1).getAuthors().size())))
 				.andExpect(jsonPath("$.books[1].publisher", 
 						is(books.getContent().get(1).getPublisher())))
 				.andExpect(jsonPath("$.books[1].datetime", 
