@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+	<title>책 검색 서비스</title>
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="/book-search">책 검색 서비스</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<!-- <div class="collapse navbar-collapse" id="navbarColor01"> -->
+			<div class="collapse navbar-collapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="/book-search">책 검색</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/search-history">내 검색 히스토리</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/search-keyword">인기 키워드 목록</a>
+					</li>
+				</ul>
+				<form class="form-inline">
+					<button class="btn btn-outline-info my-2 my-sm-0" id="logout">로그아웃</button>
+				</form>
+			</div>
+		</nav>
+ 	</header>
+	<main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content" role="main">
+		<div class="container-fluid">
+			<h1 class="bd-title" id="content">책 검색</h1>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" id="keyword" placeholder="검색어를 입력해 주세요." aria-describedby="basic-addon2">
+				<div class="input-group-append">
+					<button class="btn btn-primary" type="button" id="search">검색</button>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<table id="bookSearchTable">
+			</table>
+		</div>
+ 		<div style="height: 40px;">
+		</div>
+		<div class="container-fluid" align="center">
+			<button type="button" class="btn btn-primary" id="prev">이전</button>
+			<button type="button" class="btn btn-primary" id="next">다음</button>		
+		</div>
+		
+		
+		<!-- Book Detail Modal -->
+		<div class="modal fade" id="bookDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="userRegisterModalLabel">상세 조회</h5>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-3">제목</div>
+							<div class="col-md-9" id="bookTitle"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">도서 썸네일</div>
+							<div class="col-md-9" id="bookThumbnail"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">소개</div>
+							<div class="col-md-9" id="bookContents"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">ISBN</div>
+							<div class="col-md-9" id="bookIsbn"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">저자</div>
+							<div class="col-md-9" id="bookAuthors"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">출판사</div>
+							<div class="col-md-9" id="bookPublisher"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">출판일</div>
+							<div class="col-md-9" id="bookDatetime"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">정가</div>
+							<div class="col-md-9" id="bookPrice"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-3">판매가</div>
+							<div class="col-md-9" id="bookSalePrice"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		
+		
+		
+		
+    </main>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+	<script src="./js/book-search.js"></script>
+</body>
+</html>
